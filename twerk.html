@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dwergen Twerk Simulator | Het Rijk Ontwaakt</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .simulator-container {
+            position: relative;
+            background-color: #1a1b1e;
+            color: #e5e7eb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            touch-action: none;
+            height: 600px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dungeon-bg {
+            background-image:
+                radial-gradient(circle at 50% 100%, #2d1b14 0%, #1a1b1e 60%),
+                repeating-linear-gradient(90deg, #111 0px, #111 2px, transparent 2px, transparent 50px),
+                repeating-linear-gradient(0deg, #111 0px, #111 2px, transparent 2px, transparent 50px);
+            background-size: 100% 100%, 100px 100px, 100px 100px;
+        }
+
+        .simulator-container input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .simulator-container input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #f59e0b;
+            cursor: pointer;
+            margin-top: -10px;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            border: 2px solid #fff;
+        }
+
+        .simulator-container input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #4b5563;
+            border-radius: 2px;
+        }
+
+        .shake-container {
+            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+            max-height: 100%;
+        }
+
+        .disco-light {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translateX(-50%);
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 165, 0, 0.2), transparent 70%);
+            mix-blend-mode: overlay;
+            animation: pulse-light 2s infinite alternate;
+        }
+
+        @keyframes pulse-light {
+            0% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .sim-header {
+            z-index: 10;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .sim-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f59e0b;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-shadow: 0 4px 0 #000;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .sim-subtitle {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .sim-stage {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .sim-controls {
+            z-index: 20;
+            width: 100%;
+            max-width: 28rem;
+            background-color: rgba(31, 41, 55, 0.9);
+            padding: 1.5rem;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+            border-top: 4px solid #d97706;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin-bottom: 0;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group.last {
+            margin-bottom: 0.5rem;
+        }
+
+        .control-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-label {
+            color: #f59e0b;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+        }
+
+        .control-value {
+            color: white;
+            font-family: monospace;
+            background-color: #374151;
+            padding: 0 0.5rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Dwergen Twerk Simulator</h1>
+        <p>Stamp op de steen, laat de berg schudden.</p>
+        <nav>
+            <a href="index.html">Start</a>
+            <a href="announcements.html">Berichten van de Herauten</a>
+            <a href="lore.html">Lore</a>
+            <a href="name-generator.html">Namengenerator</a>
+            <a href="twerk.html">Dwergen Twerk Simulator</a>
+            <a href="flappy-dragon.html">Flappy Draak</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="section">
+            <h2>De Simulator</h2>
+            <p>Pas de haast en impact schuifregelaars aan om het dwergenritme te bepalen.</p>
+
+            <div class="simulator-container dungeon-bg">
+                <div class="sim-header">
+                    <h1 class="sim-title">Ironforge Dansvloer</h1>
+                    <p class="sim-subtitle">Verplaats de schuifregelaars om het ritme te bepalen</p>
+                    <div class="sim-stage">
+                        <div class="disco-light"></div>
+
+                        <svg id="dwarf-canvas" width="400" height="500" viewBox="0 0 400 500" class="shake-container">
+                            <defs>
+                                <linearGradient id="armorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#374151;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#9ca3af;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#374151;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fca5a5;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f87171;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+
+                            <ellipse cx="200" cy="460" rx="100" ry="20" fill="rgba(0,0,0,0.6)" />
+
+                            <g id="lower-body-group" transform-origin="200 300">
+                                <path d="M140 350 L140 450 L110 450" stroke="#4b2c20" stroke-width="20" fill="none"
+                                    stroke-linecap="round" />
+                                <path d="M110 450 L90 460" stroke="#1f2937" stroke-width="25" fill="none"
+                                    stroke-linecap="round" />
+
+                                <path d="M260 350 L260 450 L290 450" stroke="#4b2c20" stroke-width="20" fill="none"
+                                    stroke-linecap="round" />
+                                <path d="M290 450 L310 460" stroke="#1f2937" stroke-width="25" fill="none"
+                                    stroke-linecap="round" />
+
+                                <g id="booty-shake-layer">
+                                    <rect x="130" y="280" width="140" height="80" rx="20" fill="#5D4037" />
+                                    <rect x="125" y="300" width="20" height="60" fill="url(#armorGrad)" rx="5" />
+                                    <rect x="255" y="300" width="20" height="60" fill="url(#armorGrad)" rx="5" />
+
+                                    <circle id="cheek-left" cx="170" cy="320" r="35" fill="#4E342E" stroke="#3E2723"
+                                        stroke-width="2" />
+                                    <circle id="cheek-right" cx="230" cy="320" r="35" fill="#4E342E" stroke="#3E2723"
+                                        stroke-width="2" />
+
+                                    <rect x="135" y="270" width="130" height="20" fill="#1f2937" />
+                                    <circle cx="200" cy="280" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="3" />
+                                </g>
+                            </g>
+
+                            <g id="upper-body-group" transform-origin="200 250">
+                                <path d="M140 270 L120 150 L280 150 L260 270 Z" fill="url(#armorGrad)" stroke="#1f2937"
+                                    stroke-width="2" />
+
+                                <circle cx="110" cy="160" r="25" fill="#374151" stroke="#9ca3af" stroke-width="2" />
+                                <circle cx="290" cy="160" r="25" fill="#374151" stroke="#9ca3af" stroke-width="2" />
+
+                                <path d="M110 160 Q 80 180 60 120" stroke="#fca5a5" stroke-width="25" fill="none"
+                                    stroke-linecap="round" />
+                                <rect x="40" y="100" width="40" height="30" fill="#374151" rx="5" />
+
+                                <path d="M290 160 Q 320 180 340 120" stroke="#fca5a5" stroke-width="25" fill="none"
+                                    stroke-linecap="round" />
+                                <rect x="320" y="100" width="40" height="30" fill="#374151" rx="5" />
+
+                                <g transform="translate(50, 110) rotate(-10)">
+                                    <rect x="0" y="-80" width="10" height="120" fill="#5D4037" />
+                                    <path d="M5 -80 L-30 -100 L-30 -40 Z" fill="#9ca3af" stroke="#fff"
+                                        stroke-width="1" />
+                                    <path d="M5 -80 L40 -100 L40 -40 Z" fill="#9ca3af" stroke="#fff" stroke-width="1" />
+                                </g>
+
+                                <g transform="translate(0, 10)">
+                                    <rect x="180" y="150" width="40" height="30" fill="#fca5a5" />
+                                    <path d="M160 140 Q 150 180 140 210 L 260 210 Q 250 180 240 140 Z" fill="#b45309" />
+                                    <path d="M150 130 A 50 50 0 1 1 250 130 L 250 140 L 150 140 Z" fill="#4b5563"
+                                        stroke="#1f2937" stroke-width="2" />
+                                    <path d="M150 130 L 145 160 Q 200 170 255 160 L 250 130 Z" fill="#374151"
+                                        stroke="#1f2937" stroke-width="2" />
+                                    <rect x="195" y="80" width="10" height="80" fill="#1f2937" />
+                                    <circle cx="170" cy="120" r="3" fill="#9ca3af" />
+                                    <circle cx="230" cy="120" r="3" fill="#9ca3af" />
+                                    <circle cx="160" cy="145" r="3" fill="#9ca3af" />
+                                    <circle cx="240" cy="145" r="3" fill="#9ca3af" />
+                                    <path d="M155 110 Q 120 90 130 60" stroke="#fef3c7" stroke-width="12" fill="none"
+                                        stroke-linecap="round" />
+                                    <path d="M245 110 Q 280 90 270 60" stroke="#fef3c7" stroke-width="12" fill="none"
+                                        stroke-linecap="round" />
+                                    <path d="M175 160 L 170 220" stroke="#92400e" stroke-width="12"
+                                        stroke-linecap="round" />
+                                    <path d="M225 160 L 230 220" stroke="#92400e" stroke-width="12"
+                                        stroke-linecap="round" />
+                                    <rect x="164" y="200" width="12" height="5" fill="#fef3c7" />
+                                    <rect x="224" y="200" width="12" height="5" fill="#fef3c7" />
+                                </g>
+                            </g>
+
+                            <g id="sweat-particles" style="opacity: 0">
+                                <circle cx="150" cy="150" r="3" fill="#60a5fa" />
+                                <circle cx="250" cy="150" r="3" fill="#60a5fa" />
+                                <circle cx="200" cy="100" r="4" fill="#60a5fa" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div class="sim-controls">
+                        <div class="control-group">
+                            <div class="control-label-row">
+                                <label class="control-label">Haast (Snelheid)</label>
+                                <span id="speed-val" class="control-value">1.0x</span>
+                            </div>
+                            <input type="range" id="speed-slider" min="0" max="20" step="0.5" value="5">
+                        </div>
+
+                        <div class="control-group last">
+                            <div class="control-label-row">
+                                <label class="control-label">Impact (Amplitude)</label>
+                                <span id="amp-val" class="control-value">50%</span>
+                            </div>
+                            <input type="range" id="amp-slider" min="0" max="50" step="1" value="10">
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Smeed je verhaal. © <span data-year></span> Het Rijk Ontwaakt</p>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        (function () {
+            // DOM Elements
+            const lowerBody = document.getElementById('lower-body-group');
+            const upperBody = document.getElementById('upper-body-group');
+            const bootyLayer = document.getElementById('booty-shake-layer');
+            const cheekLeft = document.getElementById('cheek-left');
+            const cheekRight = document.getElementById('cheek-right');
+            const sweatParticles = document.getElementById('sweat-particles');
+
+            const speedSlider = document.getElementById('speed-slider');
+            const ampSlider = document.getElementById('amp-slider');
+            const speedValDisplay = document.getElementById('speed-val');
+            const ampValDisplay = document.getElementById('amp-val');
+
+            // State
+            let time = 0;
+            let speed = 5;
+            let amplitude = 10;
+            let isSweating = false;
+
+            // Configuration
+            const BASE_SPEED_MULTIPLIER = 0.05;
+
+            // UI Listeners
+            if (speedSlider) {
+                speedSlider.addEventListener('input', (e) => {
+                    speed = parseFloat(e.target.value);
+                    if (speedValDisplay) speedValDisplay.innerText = (speed / 5).toFixed(1) + 'x';
+                    checkSweat();
+                });
+            }
+
+            if (ampSlider) {
+                ampSlider.addEventListener('input', (e) => {
+                    amplitude = parseFloat(e.target.value);
+                    if (ampValDisplay) ampValDisplay.innerText = (amplitude * 2) + '%';
+                    checkSweat();
+                });
+            }
+
+            function checkSweat() {
+                // If intensity is high, show sweat
+                if (sweatParticles) {
+                    if (speed > 12 && amplitude > 25) {
+                        sweatParticles.style.opacity = 1;
+                    } else {
+                        sweatParticles.style.opacity = 0;
+                    }
+                }
+            }
+
+            // Animation Loop
+            function animate() {
+                // Increment time based on speed
+                time += speed * BASE_SPEED_MULTIPLIER;
+
+                // --- Physics of the Twerk ---
+
+                // 1. Vertical Bounce (Sine wave)
+                if (lowerBody) {
+                    const bounceY = Math.sin(time) * amplitude;
+                    const rotateDeg = Math.cos(time) * (amplitude * 0.3);
+                    const cheekOffset = Math.sin(time * 2) * (amplitude * 0.1);
+
+                    lowerBody.setAttribute('transform', `translate(0, ${bounceY}) rotate(${rotateDeg})`);
+
+                    const stretch = 1 + (bounceY * 0.002);
+                    if (bootyLayer) {
+                        bootyLayer.setAttribute('transform', `scale(1, ${stretch})`);
+                    }
+
+                    const upperBodyY = bounceY * -0.3;
+                    const upperBodyRot = rotateDeg * -0.5;
+                    if (upperBody) {
+                        upperBody.setAttribute('transform', `translate(0, ${upperBodyY}) rotate(${upperBodyRot})`);
+                    }
+
+                    if (cheekLeft) cheekLeft.setAttribute('transform', `translate(${-cheekOffset}, ${cheekOffset})`);
+                    if (cheekRight) cheekRight.setAttribute('transform', `translate(${cheekOffset}, ${-cheekOffset})`);
+
+                    if (sweatParticles && sweatParticles.style.opacity == '1') {
+                        const sweatY = (Date.now() / 10) % 50;
+                        sweatParticles.setAttribute('transform', `translate(0, ${sweatY})`);
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+
+            // Start the dance
+            animate();
+        })();
+    </script>
+</body>
+
+</html>
