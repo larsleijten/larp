@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Namengenerator | Het Rijk Ontwaakt</title>
+    <title>Namengenerator | Het Verhaal van Nympaxia</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
     <header>
         <h1>Namengenerator</h1>
-        <p>Smeed een naam die barden en strijd waardig is.</p>
+        <p>Smeed een naam waardig aan strijder, bard of magiër.</p>
         <nav>
             <a href="index.html">Start</a>
             <a href="announcements.html">Berichten van de Herauten</a>
@@ -24,22 +24,46 @@
 
     <main>
         <section class="section">
-            <h2>Binnenkort beschikbaar</h2>
-            <p>Plaats hier je generatorscript wanneer je er klaar voor bent. Ik zal het op deze pagina integreren.</p>
-            <div class="notice">
-                <p><strong>Plaatsaanduiding:</strong> De uitvoer van de generator verschijnt hieronder.</p>
-            </div>
-            <div class="card" id="name-generator-placeholder">
-                <p>Je gegenereerde naam verschijnt hier.</p>
+            <h2>Namengenerator</h2>
+            <p style="text-align: center; font-style: italic; color: var(--ink);">Ontdek jouw naam in de oude talen</p>
+
+            <div class="name-gen-container">
+                <div class="divider"></div>
+
+                <div class="input-group">
+                    <label for="userName">Jouw Naam</label>
+                    <input type="text" id="userName" placeholder="Voer je naam in..." required>
+                </div>
+
+                <div class="input-group">
+                    <label for="nameStyle">Kies Je Afkomst</label>
+                    <select id="nameStyle">
+                        <option value="elvish">Juplentian</option>
+                        <option value="dwarvish">Berküntaller</option>
+                        <option value="rohan">Heumhavian</option>
+                        <option value="wizardly">Had'Rûdder</option>
+                    </select>
+                </div>
+
+                <button class="name-gen-button" onclick="generateName()">
+                    <span style="position: relative; z-index: 1;">Smeed Je Naam</span>
+                </button>
+
+                <div id="result" class="result hidden">
+                    <div class="result-label">Jouw Naam Onthuld</div>
+                    <div id="generatedName" class="generated-name"></div>
+                    <div id="meaning" class="meaning"></div>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>Smeed je verhaal. © <span data-year></span> Het Rijk Ontwaakt</p>
+        <p>Smeed je verhaal. © <span data-year></span> Het Verhaal van Nympaxia</p>
     </footer>
 
     <script src="main.js"></script>
+    <script src="name-generator.js"></script>
 </body>
 
 </html>
