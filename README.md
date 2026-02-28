@@ -36,6 +36,7 @@ This is a static website for "Het Rijk Ontwaakt", a LARP event. The site feature
   - `#cursor-glow`: A fixed `div` with `mix-blend-mode: screen` tracking mouse position.
   - `flame-pulse`: Animation for cards and buttons.
   - `ancient-flicker`: Text shadow animation for emphasized elements.
+  - `animateGlow`: Background orb auto-animates (Lissajous curve) on idle/mobile, follows mouse on interaction.
 
 ### Game Logic (`flappy-dragon.js`)
 - **State Management:** `START`, `PLAYING`, `GAMEOVER`.
